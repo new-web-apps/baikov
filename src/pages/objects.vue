@@ -1,20 +1,39 @@
 <template>
-  <!-- <div>Objects</div> из гавного стора взять заголовок страницы -->
+  <div class="objects-container">
 
-  <div class="objects-list">
-    <v-list v-model:selected="selectedObject" mandatory :items="objectList"></v-list>
+    <!-- КОЛОНКА 1 (СЛЕВА): Список объектов -->
+    <div class="objects-list-column">
+      <v-list v-model:selected="selectedObject" mandatory :items="objectList" color="primary"></v-list>
+    </div>
+
+    <!-- КОЛОНКА 2 (ЦЕНТР): Текстовая информация -->
+    <div class="text-info-column">
+      <h1 class="title">{{ currentObject?.title }}</h1>
+      <div class="description">{{ currentObject?.text }}</div>
+    </div>
+
+    <!-- КОЛОНКА 3 (СПРАВА): Галерея и медиа -->
+    <div class="media-column">
+      <!-- Основная большая картинка -->
+      <div class="image-wrapper">
+        <img :src="selectedPicture" alt="Главное фото" />
+      </div>
+
+      <!-- Лента превью (миниатюры) -->
+      <div class="photos-list">
+        <v-slide-group v-model="selectedPicture" mandatory show-arrows>
+          <v-slide-group-item v-for="photo in currentObject?.photos" :key="photo" :value="photo"
+            v-slot="{ isSelected, toggle }">
+            <v-card :class="['ma-1', isSelected ? 'active-thumb' : 'inactive-thumb']" height="70" width="70" flat
+              @click="toggle">
+              <v-img :src="photo" cover height="100%"></v-img>
+            </v-card>
+          </v-slide-group-item>
+        </v-slide-group>
+      </div>
+    </div>
+
   </div>
-
-  <div class="description">{{ currentObject?.text }}</div>
-
-  <div class="photos-list">
-    <v-list v-model:selected="selectedPicture" mandatory :items="currentObject?.photos || []"></v-list>
-  </div>
-
-  <div class="image">
-    <img :src="selectedPicture[0]" />
-  </div>
-
 </template>
 
 <script lang="ts" setup>
@@ -45,19 +64,165 @@ const photosList = computed(() => {
   })
 });
 
-const selectedPicture = ref([currentObject.value.photos?.[0] || ''])
+const selectedPicture = ref(currentObject.value.photos?.[0] || '')
 
 watch(selectedObject, () => {
-  // На всякий случай проверяем, что отфильтрованный список не пустой
   if (photosList.value.length > 0) {
-    // Берем САМЫЙ ПЕРВЫЙ элемент из нового отфильтрованного списка
     const firstItemValue = photosList.value[0].value
 
-    // Принудительно устанавливаем его как выбранный во втором списке
-    selectedPicture.value = [firstItemValue]
+    selectedPicture.value = firstItemValue
   } else {
-    selectedPicture.value = [] // Если элементов нет, очищаем выбор
+    selectedPicture.value = ''
   }
 })
-
 </script>
+
+<style scoped>
+/* Глобальный трехколоночный Grid на всю высоту экрана */
+.objects-container {
+  display: grid;
+  /* 3 колонки: Меню (280px), Текст (занимает 45% от остатка), Картинка (занимает 55%) */
+  grid-template-columns: 280px 45fr 55fr;
+  gap: 32px;
+  padding: 24px;
+
+  /* Исключаем вертикальный скролл страницы: фиксируем высоту контейнера */
+  height: calc(100vh - 64px);
+  /* 64px — примерная высота вашего v-app-bar, если он есть */
+  max-height: calc(100vh - 64px);
+  overflow: hidden;
+  /* Запрещаем скролл самого экрана */
+  box-sizing: border-box;
+}
+
+/* КОЛОНКА 1: Список объектов */
+.objects-list-column {
+  background: #ffffff;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  align-items: end;
+}
+
+/* КОЛОНКА 2: Текст и заголовок (по центру) */
+.text-info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  overflow: hidden;
+  /* Родитель не скроллится */
+  align-items: end;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+  flex-shrink: 0;
+  /* Заголовок не должен сжиматься */
+  height: 100px;
+}
+
+/* Описание скроллится отдельно, если текст очень длинный */
+.description {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #4a4a4a;
+  white-space: pre-line;
+  overflow-y: auto;
+  /* Внутренний скролл ТОЛЬКО для текста */
+  padding-right: 8px;
+  height: 100%;
+  height: 200px;
+}
+
+/* КОЛОНКА 3: Большое фото и превью (справа) */
+.media-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Главное изображение адаптивно подстраивается под высоту экрана */
+.image-wrapper {
+  width: 100%;
+  flex-grow: 1;
+  /* Картинка забирает всё свободное место по высоте */
+  min-height: 0;
+  /* Важно для корректной работы flex-grow во вложенных элементах */
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Горизонтальный блок миниатюр */
+.photos-list {
+  width: 100%;
+  flex-shrink: 0;
+  /* Панель превью не сжимается по высоте */
+}
+
+/* Стили превью-карточек */
+.active-thumb {
+  border: 3px solid #1867c0 !important;
+  transform: scale(0.95);
+  transition: all 0.2s ease;
+}
+
+.inactive-thumb {
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}
+
+.inactive-thumb:hover {
+  opacity: 1;
+}
+
+/* Кастомизация внутренних скроллбаров, чтобы они выглядели аккуратно */
+.objects-list-column::-webkit-scrollbar,
+.description::-webkit-scrollbar {
+  width: 6px;
+}
+
+.objects-list-column::-webkit-scrollbar-thumb,
+.description::-webkit-scrollbar-thumb {
+  background-color: #dcdcdc;
+  border-radius: 4px;
+}
+
+/* Адаптивность для небольших экранов (планшеты/моб) */
+@media (max-width: 1024px) {
+  .objects-container {
+    grid-template-columns: 1fr;
+    /* Перестраиваем в одну колонку */
+    height: auto;
+    max-height: none;
+    overflow: auto;
+    /* На мобильных скролл страницы возвращается */
+  }
+
+  .objects-list-column,
+  .description {
+    overflow-y: visible;
+    height: auto;
+  }
+
+  .image-wrapper {
+    height: 300px;
+  }
+}
+</style>
