@@ -17,9 +17,9 @@ export const useObjectsStore = defineStore('objects', {
             title: 'Мост через Генеральную балку',
             text: 'Мост, построенный по новому плану, обошелся в 16100 р. 93 1/2 к. с. В день Тезоименитства Его Императорского Величества Государя Императора 30 августа 1864 года Ростовская Городская Дума торжественно освятила мост и открыла чрез него проезд. В честь городского головы Андрея Матвеевича Байкова мост назван его именем',
             photos: [
-              '/images/most/imgonline_com_ua_PicOnPic_Ows93UYrMmnVU.jpg',
-              '/images/most/20109790.jpg',
-              '/images/most/66650151.jpg',
+              'images/most/imgonline_com_ua_PicOnPic_Ows93UYrMmnVU.jpg',
+              'images/most/20109790.jpg',
+              'images/most/66650151.jpg',
             ],
         },
         'водопровод': {
