@@ -1,25 +1,31 @@
 <template>
   <v-app color="transparent">
-    <!-- Шапка абсолютно независима, зафиксирована сверху, z-index приподнят -->
-    <v-app-bar color="transparent" flat fixed class="main-header">
-      <div class="d-flex align-center justify-center g-4 w-100">
-        <v-btn variant="plain" to="/premise" selected-class="selected">
-          {{ mainTexts?.menuText?.pagePremise }}
-        </v-btn>
-        <v-btn variant="plain" to="/tansformations" selected-class="selected">
-          {{ mainTexts?.menuText?.pagetTansformations }}
-        </v-btn>
-        <v-btn variant="plain" to="/stat" selected-class="selected">
-          {{ mainTexts?.menuText?.pageStat }}
-        </v-btn>
-        <v-btn variant="plain" to="/person" selected-class="selected">
-          {{ mainTexts?.menuText?.pagePerson }}
-        </v-btn>
-        <v-btn variant="plain" to="/" exact selected-class="selected">
-          {{ mainTexts?.menuText?.pageObjects }}
-        </v-btn>
+    <div :style="{ display: 'fixed', height: headerHeight }" class="main-header">
+      <div class="header-container"
+        :style="{ minWidth: mainWidth, maxWidth: mainWidth, display: 'flex', marginLeft: 'auto', marginRight: 'auto', alignItems: 'center' }">
+        <v-img src="/images/header/1.png" alt="Логотип" :width="headerHeight" :height="headerHeight" />
+        <div class="header-text text-secondary shadow">География дала Ростову шанс.Байков превратил этот шанс в судьбу
+        </div>
+        <div>
+          <v-btn variant="plain" to="/premise" selected-class="selected">
+            {{ mainTexts?.menuText?.pagePremise }}
+          </v-btn>
+          <v-btn variant="plain" to="/tansformations" selected-class="selected">
+            {{ mainTexts?.menuText?.pagetTansformations }}
+          </v-btn>
+          <v-btn variant="plain" to="/stat" selected-class="selected">
+            {{ mainTexts?.menuText?.pageStat }}
+          </v-btn>
+          <v-btn variant="plain" to="/person" selected-class="selected">
+            {{ mainTexts?.menuText?.pagePerson }}
+          </v-btn>
+          <v-btn variant="plain" to="/" exact selected-class="selected">
+            {{ mainTexts?.menuText?.pageObjects }}
+          </v-btn>
+        </div>
+        <v-img src="/images/header/герб.png" alt="Логотип" :width="headerHeight" :height="headerHeight" />
       </div>
-    </v-app-bar>
+    </div>
 
     <!-- Зона контента занимает честные 100vh. Никакого дрожания и отступов -->
     <v-main class="scrollable-content" color="transparent">
@@ -34,9 +40,29 @@ import { storeToRefs } from 'pinia';
 
 const appStore = useAppStore();
 const { getMainTexts: mainTexts } = storeToRefs(appStore);
+
+const headerHeight = 200;
+const mainWidth = 1280;
 </script>
 
 <style>
+:root {
+  --header-height: v-bind(headerHeight + 'px');
+  --main-width: v-bind(mainWidth + 'px');
+  --header-height: 200px;
+  --main-width: 1280px;
+}
+
+/* Применяем ко всему тексту на сайте */
+.shadow {
+  text-shadow:
+    0px 1px 2px rgba(255, 255, 255, 0.6),
+    /* Плотная тень для четкости краев */
+    0px 2px 8px rgba(255, 255, 255, 0.3);
+  /* Мягкое размытие для объема */
+}
+
+
 /* Полностью отключаем дефолтный скролл окна */
 html,
 body {
@@ -44,7 +70,7 @@ body {
   height: 100% !important;
   margin: 0;
   padding: 0;
-  background: #dadad2;
+  /* background: #dadad2; */
 }
 
 /* Шапка парит над всем контентом, не влияя на его геометрию */
@@ -56,6 +82,11 @@ body {
   z-index: 9999 !important;
   pointer-events: none;
   /* Пропускаем клики сквозь прозрачные области шапки */
+}
+
+.header-container {
+  width: var(--main-width);
+  width: 1280px;
 }
 
 /* Возвращаем кликабельность кнопкам внутри шапки */
@@ -76,5 +107,10 @@ body {
 /* Стили для активных кнопок */
 .v-selected--active {
   font-weight: bold;
+}
+
+.header-text {
+  font-size: 26px;
+  font-weight: 600;
 }
 </style>

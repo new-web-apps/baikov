@@ -108,6 +108,7 @@ onUnmounted(() => {
 <style scoped>
 .simple-scroll-page {
   width: 100%;
+  padding-top: var(--header-height);
 }
 
 .scroll-section {
@@ -119,7 +120,7 @@ onUnmounted(() => {
 }
 
 .bg-first {
-  /* background-image: url('/images/start/1.png'); */
+  background-image: url('/images/start/1.png');
 }
 
 .bg-second {

@@ -80,6 +80,7 @@ watch(selectedObject, () => {
 <style scoped>
 /* Глобальный трехколоночный Grid на всю высоту экрана */
 .objects-container {
+  padding-top: var(--header-height);
   display: grid;
   /* 3 колонки: Меню (280px), Текст (занимает 45% от остатка), Картинка (занимает 55%) */
   grid-template-columns: 280px 45fr 55fr;
