@@ -3,25 +3,28 @@
     <div :style="{ display: 'fixed', height: headerHeight }" class="main-header">
       <div class="header-container"
         :style="{ minWidth: mainWidth, maxWidth: mainWidth, display: 'flex', marginLeft: 'auto', marginRight: 'auto', alignItems: 'center' }">
-        <v-img src="/images/header/1.png" alt="Логотип" :width="headerHeight" :height="headerHeight"
-          style="margin: 2px;" />
+        <v-btn to="/" variant="plain" :ripple="false" class="pa-0 ma-0"
+          style="min-width: 0; width: auto; height: auto; opacity: 1;">
+          <v-img src="/images/header/1.png" alt="Логотип" :width="headerHeight" :height="headerHeight"
+            style="margin: 2px;" />
+        </v-btn>
         <div class="header-text text-secondary shadow">География дала Ростову шанс<br />Байков превратил этот шанс в
           судьбу
         </div>
         <div>
-          <v-btn variant="plain" to="/premise" selected-class="selected">
+          <v-btn size="large" variant="plain" to="/" exact-match selected-class="selected">
             {{ mainTexts?.menuText?.pagePremise }}
           </v-btn>
-          <v-btn variant="plain" to="/tansformations" selected-class="selected">
+          <v-btn size="large" variant="plain" exact-match to="/tansformations" selected-class="selected">
             {{ mainTexts?.menuText?.pagetTansformations }}
           </v-btn>
-          <v-btn variant="plain" to="/stat" selected-class="selected">
+          <v-btn size="large" variant="plain" exact-match to="/stat" selected-class="selected">
             {{ mainTexts?.menuText?.pageStat }}
           </v-btn>
-          <v-btn variant="plain" to="/person" selected-class="selected">
+          <v-btn size="large" variant="plain" exact-match to="/person" selected-class="selected">
             {{ mainTexts?.menuText?.pagePerson }}
           </v-btn>
-          <v-btn variant="plain" to="/" exact selected-class="selected">
+          <v-btn size="large" variant="plain" exact-match to="/objects" exact selected-class="selected">
             {{ mainTexts?.menuText?.pageObjects }}
           </v-btn>
         </div>
@@ -72,6 +75,9 @@ const mainWidth = 1280;
     0px 2px 6px rgba(0, 0, 0, 0.4);
 }
 
+.router-link-exact-active .v-btn__content {
+  text-decoration: underline !important;
+}
 
 /* Полностью отключаем дефолтный скролл окна */
 html,
@@ -91,7 +97,9 @@ body {
   width: 100% !important;
   z-index: 9999 !important;
   pointer-events: none;
-  /* Пропускаем клики сквозь прозрачные области шапки */
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0) 100%);
 }
 
 .header-container {
@@ -117,6 +125,10 @@ body {
 /* Стили для активных кнопок */
 .v-selected--active {
   font-weight: bold;
+}
+
+.v-btn--active {
+  text-decoration: underline !important;
 }
 
 .header-text {

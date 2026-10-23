@@ -1,9 +1,31 @@
 <template>
-  <h3>{{ title }}</h3>
-  <h5>{{ subtitle }}</h5>
-  <div v-for="item in text">
-    {{ item }}
+  <div class="results-container" style="display: flex1; gap: 20px;">
+    <v-img src="/images/start/1.png"
+      style="width: calc(var(--main-width) / 1.5); margin-left: auto; margin-right: auto;" />
+    <div>
+      <h2>
+        {{ title }}
+      </h2>
+      <p>
+        {{ text[0] }}
+      </p>
+    </div>
   </div>
+  <div class="results-container" style="display: flex1; gap: 20px;">
+    <div>
+      <h2>
+        {{ subtitle }}
+      </h2>
+      <p>
+        {{ text[1] }}
+      </p>
+    </div>
+    <v-img src="/images/start/3.jpg"
+      style="width: calc(var(--main-width) / 1.5); margin-left: auto; margin-right: auto;" />
+  </div>
+  <h2>
+    {{ text[2] }}
+  </h2>
 </template>
 
 <script setup lang="ts">
@@ -15,3 +37,13 @@ const text = [
   'Сама география говорила: городу нужен был только сильный управленец, чтобы превратить это преимущество в экономическую мощь.',
 ]
 </script>
+
+<style scoped>
+p {
+  font-size: 20px;
+}
+
+.results-container>* {
+  flex: 1;
+}
+</style>

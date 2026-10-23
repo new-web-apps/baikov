@@ -1,17 +1,21 @@
 <template>
-  <h3>{{ title }}</h3>
-  <v-img :width="255" aspect-ratio="4/3" cover src="/images/results/1.png"></v-img>
-  <div>
-    {{ populationGrowth.title }}
-  </div>
-  <div>
-    {{ populationGrowth.text }}
-  </div>
-  <div>
-    {{ tradeGrowth.title }}
-  </div>
-  <div>
-    {{ tradeGrowth.text }}
+  <div class="results-container" style="display: flex; gap: 20px;">
+    <v-img src="/images/results/1.png"
+      style="width: calc(var(--main-width) / 1.5); margin-left: auto; margin-right: auto;" />
+    <div>
+      <h2>
+        {{ populationGrowth.title }}
+      </h2>
+      <p>
+        {{ populationGrowth.text }}
+      </p>
+      <h2>
+        {{ tradeGrowth.title }}
+      </h2>
+      <p>
+        {{ tradeGrowth.text }}
+      </p>
+    </div>
   </div>
 </template>
 
@@ -26,3 +30,13 @@ const tradeGrowth = {
   text: 'График отражает переход Ростова от хаотичной провинциальной торговли к статусу экономического лидера Юга России. До Байкова город задыхался без свободных денег. Создание Конторы Государственного банка (1861 г.) и Общества взаимного кредита дали местным купцам дешёвые оборотные кредиты, убрав зависимость от столичных ростовщиков. ',
 }
 </script>
+
+<style scoped>
+p {
+  font-size: 20px;
+}
+
+.results-container>* {
+  flex: 1;
+}
+</style>

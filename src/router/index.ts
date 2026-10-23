@@ -13,11 +13,11 @@ const router = createRouter({
       component: Person,
     },
     {
-      path: '/premise',
+      path: '/',
       component: Premise,
     },
     {
-      path: '/',
+      path: '/objects',
       component: Objects,
     },
     {
