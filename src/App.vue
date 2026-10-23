@@ -3,7 +3,8 @@
     <div :style="{ display: 'fixed', height: headerHeight }" class="main-header">
       <div class="header-container"
         :style="{ minWidth: mainWidth, maxWidth: mainWidth, display: 'flex', marginLeft: 'auto', marginRight: 'auto', alignItems: 'center' }">
-        <v-img src="/images/header/1.png" alt="Логотип" :width="headerHeight" :height="headerHeight" />
+        <v-img src="/images/header/1.png" alt="Логотип" :width="headerHeight" :height="headerHeight"
+          style="margin: 2px;" />
         <div class="header-text text-secondary shadow">География дала Ростову шанс<br />Байков превратил этот шанс в
           судьбу
         </div>
@@ -24,7 +25,8 @@
             {{ mainTexts?.menuText?.pageObjects }}
           </v-btn>
         </div>
-        <v-img src="/images/header/герб.png" alt="Логотип" :width="headerHeight" :height="headerHeight" />
+        <v-img src="/images/header/герб.png" alt="Логотип" :width="headerHeight - 25" :height="headerHeight - 25"
+          style="margin: 3px;" />
       </div>
     </div>
 
@@ -130,7 +132,19 @@ body {
      - До 85% ширины она остается четкой и сочной
      - От 85% до 100% (справа) она снова плавно растворяется в прозрачность
   */
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%),
+    linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image:
+    /* Размытие сверху (от прозрачного к черному) */
+    linear-gradient(to bottom, transparent 0%, black 15%),
+    /* Размытие слева и справа (ваш исходный градиент) */
+    linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+
+  /* ВАЖНО: чтобы маски не перекрывали, а дополняли друг друга, 
+   нужно смешать их через режим multiply (умножение) */
+  mask-composite: intersect;
+  -webkit-mask-composite: destination-in;
+  /* Для поддержки в Safari и старых Chrome */
+
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div v-for="key in Object.keys(items)">
     <div>{{ key }}</div>
-    <div>{{ items[key] }}</div>
+    <!-- <div>{{ items[key] }}</div> -->
   </div>
 </template>
 

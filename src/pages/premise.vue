@@ -16,4 +16,9 @@ import Start from '@/components/Start.vue';
 .block {
   padding-top: var(--header-height);
 }
+
+.image-section {
+  width: 100%;
+  flex-direction: column;
+}
 </style>

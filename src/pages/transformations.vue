@@ -111,7 +111,8 @@ onUnmounted(() => {
       <img v-for="picture in item.pictures" :key="picture" :src="picture" class="full-width-img"
         :style="{ width: '100%', opacity: 0.8 }" />
     </div>
-    <div class="image-section" style="display: flex; justify-content: center; align-items: center;">
+    <div class="image-section"
+      style="display: flex; justify-content: center; align-items: center; background: #d9d6cd;">
       <img src="/images/fon/2.jpeg" class="full-width-img faded-img"
         :style="{ maxHeight: 'calc(100vh - var(--header-height))', width: 'auto', opacity: 0.5 }" />
     </div>
