@@ -117,7 +117,7 @@ onUnmounted(() => {
     </div>
 
     <!-- ФИКСИРОВАННЫЙ ИНТЕРФЕЙС ПОВЕРХ КАРТИНОК -->
-    <div class="fixed-ui-layer" style="width: var(--main-width); margin-left: auto; margin-right: auto;">
+    <div class="fixed-ui-layer" style="width: min(var(--main-width), 100%); margin-left: auto; margin-right: auto;">
       <div class="fill-height">
 
         <!-- ЦЕНТРАЛЬНАЯ СЦЕНА ЗАГОЛОВКОВ (Изначально стоят крупно строго по центру) -->
@@ -167,8 +167,8 @@ onUnmounted(() => {
   padding-top: var(--header-height);
   position: fixed;
   top: 0;
-  left: calc((100% - var(--main-width)) / 2);
-  width: var(--main-width);
+  left: calc((100% - min(var(--main-width), 100%)) / 2);
+  width: min(var(--main-width), 100%);
   height: 100vh;
   z-index: 10;
   pointer-events: none;
@@ -195,8 +195,8 @@ onUnmounted(() => {
   text-align: left;
   /* width: 100%; */
   width: 500px;
-  width: var(--main-width);
-  max-width: var(--main-width);
+  width: max(var(--main-width), 500px);
+  max-width: max(var(--main-width), 500px);
   transform-origin: left center;
   /* Важно для ухода к левому краю */
   /* text-shadow: 0 4px 15px rgba(0, 0, 0, 0.95); */
@@ -206,8 +206,8 @@ onUnmounted(() => {
 
 .center-desc-stage {
   position: relative;
-  width: var(--main-width);
-  max-width: var(--main-width);
+  width: min(var(--main-width), 100%);
+  max-width: min(var(--main-width), 100%);
   height: 250px;
   font-size: 20px;
 }
