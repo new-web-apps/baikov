@@ -4,7 +4,8 @@
       <div class="header-container"
         :style="{ minWidth: mainWidth, maxWidth: mainWidth, display: 'flex', marginLeft: 'auto', marginRight: 'auto', alignItems: 'center' }">
         <v-img src="/images/header/1.png" alt="Логотип" :width="headerHeight" :height="headerHeight" />
-        <div class="header-text text-secondary shadow">География дала Ростову шанс.Байков превратил этот шанс в судьбу
+        <div class="header-text text-secondary shadow">География дала Ростову шанс<br />Байков превратил этот шанс в
+          судьбу
         </div>
         <div>
           <v-btn variant="plain" to="/premise" selected-class="selected">
@@ -110,7 +111,19 @@ body {
 }
 
 .header-text {
-  font-size: 26px;
+  font-size: 23px;
   font-weight: 600;
+  min-width: 450px;
+}
+
+.faded-img {
+  /* Магия линейного градиента маски: 
+     - Слева (0%) картинка полностью прозрачна (transparent)
+     - К 15% ширины она плавно становится 100% видимой (black)
+     - До 85% ширины она остается четкой и сочной
+     - От 85% до 100% (справа) она снова плавно растворяется в прозрачность
+  */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 </style>
