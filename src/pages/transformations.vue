@@ -64,18 +64,18 @@ onMounted(() => {
     // 1. АНИМАЦИЯ ОПИСАНИЙ: Предыдущий текст просто бесследно пропадает (без улетаний)
     tl.to(`.desc-node-${index - 1}`, {
       opacity: 0,
-      duration: 0.4,
+      duration: 0.2,
       ease: 'power1.in'
     }, label)
 
     // 2. АНИМАЦИЯ ЗАГОЛОВКОВ: Отработанный заголовок срывается с центра и улетает влево-вверх,
     // формируя список с шагом по высоте (index - 1) * 60px
     tl.to(`.title-node-${index - 1}`, {
-      xPercent: -85,              // Уносим к левому краю экрана
-      yPercent: -140,             // Поднимаем наверх из центральной зоны
+      // xPercent: -85,              // Уносим к левому краю экрана
+      // yPercent: 140,             // Поднимаем наверх из центральной зоны
       y: (index - 1) * 60,        // Накапливаем вертикальный список друг под другом
-      scale: 0.6,                 // Уменьшаем шрифт для аккуратного оглавления
-      opacity: 0.6,               // Прошлые пункты списка делаем чуть приглушенными
+      scale: 0.4,                 // Уменьшаем шрифт для аккуратного оглавления
+      // opacity: 0.6,               // Прошлые пункты списка делаем чуть приглушенными
       textAlign: 'left',
       duration: 1.2,
       ease: 'power2.inOut'
@@ -84,14 +84,14 @@ onMounted(() => {
     // 3. ПОЯВЛЕНИЕ НОВОГО БЛОКА: Новый заголовок и текст встают в центр крупно
     // Заголовок может накладываться "внахлест" поверх старого, пока тот улетает
     tl.fromTo(`.title-node-${index}`,
-      { scale: 1.5, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 1, ease: 'power2.out' },
+      { opacity: 0 },
+      { opacity: 1, duration: 1, ease: 'power2.out' },
       `${label}+=0.2`             // Микрозадержка для эффекта нахлеста
     )
 
     tl.fromTo(`.desc-node-${index}`,
-      { scale: 1.4, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 1, ease: 'power2.out' },
+      { opacity: 0 },
+      { opacity: 1, duration: 1, ease: 'power2.out' },
       `${label}+=0.2`
     )
   })
@@ -117,13 +117,13 @@ onUnmounted(() => {
     </div>
 
     <!-- ФИКСИРОВАННЫЙ ИНТЕРФЕЙС ПОВЕРХ КАРТИНОК -->
-    <div class="fixed-ui-layer">
-      <v-container class="fill-height d-flex flex-column justify-center align-center">
+    <div class="fixed-ui-layer" style="width: var(--main-width); margin-left: auto; margin-right: auto;">
+      <div class="fill-height">
 
         <!-- ЦЕНТРАЛЬНАЯ СЦЕНА ЗАГОЛОВКОВ (Изначально стоят крупно строго по центру) -->
         <div class="center-title-stage">
           <h2 v-for="(item, index) in cycleItems" :key="'title-' + item.id"
-            :class="['text-h2 font-weight-black text-white main-title-block', `title-node-${index}`]"
+            :class="['text-h2 font-weight-black text-blackText text-shadow main-title-block', `title-node-${index}`]"
             :style="{ opacity: index === 0 ? 1 : 0 }">
             {{ item.title }}
           </h2>
@@ -132,12 +132,13 @@ onUnmounted(() => {
         <!-- ЦЕНТРАЛЬНАЯ СЦЕНА ОПИСАНИЙ (Просто чистый крупный текст под заголовком, без плашек) -->
         <div class="center-desc-stage mt-8">
           <div v-for="(item, index) in cycleItems" :key="'desc-' + item.id"
-            :class="['pure-center-desc', `desc-node-${index}`]" :style="{ opacity: index === 0 ? 1 : 0 }">
-            <p class="text-h5 text-white font-weight-medium leading-relaxed text-center">{{ item.desc }}</p>
+            :class="['pure-center-desc', `desc-node-${index}`, 'text-shadow']"
+            :style="{ opacity: index === 0 ? 1 : 0 }">
+            <p class="text-h5 text-black font-weight-medium leading-relaxed text-center">{{ item.desc }}</p>
           </div>
         </div>
 
-      </v-container>
+      </div>
     </div>
 
   </div>
@@ -163,10 +164,11 @@ onUnmounted(() => {
 
 /* Фиксированный слой интерфейса */
 .fixed-ui-layer {
+  padding-top: var(--header-height);
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: calc((100% - var(--main-width)) / 2);
+  width: var(--main-width);
   height: 100vh;
   z-index: 10;
   pointer-events: none;
@@ -190,19 +192,24 @@ onUnmounted(() => {
 
 .main-title-block {
   position: absolute;
-  text-align: center;
+  text-align: left;
   /* width: 100%; */
+  width: 500px;
+  width: var(--main-width);
+  max-width: var(--main-width);
   transform-origin: left center;
   /* Важно для ухода к левому краю */
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.95);
+  /* text-shadow: 0 4px 15px rgba(0, 0, 0, 0.95); */
   line-height: 1.2 !important;
+  font-size: 52px;
 }
 
 .center-desc-stage {
   position: relative;
-  width: 100%;
-  max-width: 800px;
+  width: var(--main-width);
+  max-width: var(--main-width);
   height: 250px;
+  font-size: 20px;
 }
 
 /* Чистый текст без плашек, рамок и фонов */
@@ -211,6 +218,6 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   width: 100%;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+  /* text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95); */
 }
 </style>
