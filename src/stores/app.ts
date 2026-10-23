@@ -5,10 +5,11 @@ export const useAppStore = defineStore('app', {
   state: () => ({
     mainTexts: {
       menuText: {
-        pagePerson: 'Личность',
         pagePremise: 'Предпосылки',
-        pageObjects: 'Преобразования',
+        pagetTansformations: 'Преобразования',
         pageStat: 'Итоги преобразования',
+        pagePerson: 'Личность',
+        pageObjects: 'Объекты',
       },
     },
     images: {
