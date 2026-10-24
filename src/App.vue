@@ -159,4 +159,10 @@ body {
   /* Для поддержки в Safari и старых Chrome */
 
 }
+
+.picture {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  margin: 40px 0;
+}
 </style>

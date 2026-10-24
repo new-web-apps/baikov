@@ -1,21 +1,28 @@
 <template>
   <div class="objects-container">
-
-    <!-- КОЛОНКА 1 (СЛЕВА): Список объектов -->
-    <div class="objects-list-column">
-      <v-list v-model:selected="selectedObject" mandatory :items="objectList" color="primary"></v-list>
-    </div>
-
-    <!-- КОЛОНКА 2 (ЦЕНТР): Текстовая информация -->
-    <div class="text-info-column">
+    <div style="display: flex; flex-direction: column; justify-content: flex-end;">
       <h1 class="title">{{ currentObject?.title }}</h1>
-      <div class="description">{{ currentObject?.text }}</div>
+      <!-- Исправлено на display: grid -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+
+        <!-- Левая колонка -->
+        <div class="objects-list-column">
+          <v-list v-model:selected="selectedObject" mandatory :items="objectList" color="primary"></v-list>
+        </div>
+
+        <!-- Правая колонка -->
+        <div class="text-info-column">
+          <div class="description">{{ currentObject?.text }}</div>
+        </div>
+
+      </div>
     </div>
+
 
     <!-- КОЛОНКА 3 (СПРАВА): Галерея и медиа -->
     <div class="media-column">
       <!-- Основная большая картинка -->
-      <div class="image-wrapper">
+      <div class="picture image-wrapper">
         <img :src="selectedPicture" alt="Главное фото" />
       </div>
 
@@ -80,20 +87,25 @@ watch(selectedObject, () => {
 <style scoped>
 /* Глобальный трехколоночный Grid на всю высоту экрана */
 .objects-container {
-  padding-top: var(--header-height);
+  margin-top: var(--header-height);
+  padding-bottom: 40px;
   display: grid;
   /* 3 колонки: Меню (280px), Текст (занимает 45% от остатка), Картинка (занимает 55%) */
-  grid-template-columns: 280px 45fr 55fr;
+  grid-template-columns: 1fr 1fr;
   gap: 32px;
-  padding: 24px;
+  /* padding: 24px; */
 
   /* Исключаем вертикальный скролл страницы: фиксируем высоту контейнера */
-  height: calc(100vh - 64px);
+  height: calc(100vh - var(--header-height));
   /* 64px — примерная высота вашего v-app-bar, если он есть */
-  max-height: calc(100vh - 64px);
+  max-height: calc(100vh - var(--header-height));
   overflow: hidden;
   /* Запрещаем скролл самого экрана */
   box-sizing: border-box;
+  width: var(--main-width);
+  max-width: var(--main-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* КОЛОНКА 1: Список объектов */
@@ -126,6 +138,7 @@ watch(selectedObject, () => {
   flex-shrink: 0;
   /* Заголовок не должен сжиматься */
   height: 100px;
+  padding-left: 20px;
 }
 
 /* Описание скроллится отдельно, если текст очень длинный */
@@ -157,10 +170,11 @@ watch(selectedObject, () => {
   /* Картинка забирает всё свободное место по высоте */
   min-height: 0;
   /* Важно для корректной работы flex-grow во вложенных элементах */
-  border-radius: 12px;
+  /* border-radius: 12px; */
   overflow: hidden;
   background-color: #f5f5f5;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin: 0;
 }
 
 .image-wrapper img {
@@ -225,5 +239,22 @@ watch(selectedObject, () => {
   .image-wrapper {
     height: 300px;
   }
+}
+
+
+/* Делаем колонки флекс-контейнерами и выравниваем их содержимое по нижнему краю */
+.objects-list-column,
+.text-info-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* Прижимает контент (v-list и описание) к самому низу */
+  height: 100%;
+  /* Растягивает колонки на всю доступную высоту сетки */
+}
+
+/* Если Vuetify-список имеет внутренние отступы, которые мешают ровному выравниванию */
+.objects-list-column .v-list {
+  margin-bottom: 0;
 }
 </style>

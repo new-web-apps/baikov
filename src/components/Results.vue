@@ -1,21 +1,19 @@
 <template>
-  <div class="results-container" style="display: flex; gap: 20px;">
-    <v-img src="/images/results/1.png"
+  <div class="results-container">
+    <h2>
+      {{ populationGrowth.title }}
+    </h2>
+    <p>
+      {{ populationGrowth.text }}
+    </p>
+    <v-img src="/images/results/1.png" class="picture"
       style="width: calc(var(--main-width) / 1.5); margin-left: auto; margin-right: auto;" />
-    <div>
-      <h2>
-        {{ populationGrowth.title }}
-      </h2>
-      <p>
-        {{ populationGrowth.text }}
-      </p>
-      <h2>
-        {{ tradeGrowth.title }}
-      </h2>
-      <p>
-        {{ tradeGrowth.text }}
-      </p>
-    </div>
+    <h2>
+      {{ tradeGrowth.title }}
+    </h2>
+    <p>
+      {{ tradeGrowth.text }}
+    </p>
   </div>
 </template>
 

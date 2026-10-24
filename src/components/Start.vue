@@ -1,7 +1,5 @@
 <template>
   <div class="results-container" style="display: flex1; gap: 20px;">
-    <v-img src="/images/start/1.png"
-      style="width: calc(var(--main-width) / 1.5); margin-left: auto; margin-right: auto;" />
     <div>
       <h2>
         {{ title }}
@@ -20,7 +18,7 @@
         {{ text[1] }}
       </p>
     </div>
-    <v-img src="/images/start/3.jpg"
+    <v-img src="/images/start/3.jpg" class="picture"
       style="width: calc(var(--main-width) / 1.5); margin-left: auto; margin-right: auto;" />
   </div>
   <h2>
