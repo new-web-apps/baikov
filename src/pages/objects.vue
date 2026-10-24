@@ -41,6 +41,10 @@
     </div>
 
   </div>
+  <div class="image-section" style="display: flex; justify-content: center; align-items: center; background: #d9d6cd;">
+    <img src="/images/fon/2.jpeg" class="full-width-img faded-img z"
+      :style="{ maxHeight: 'calc(100vh - var(--header-height))', width: 'auto', opacity: 0.5 }" />
+  </div>
 </template>
 
 <script lang="ts" setup>
