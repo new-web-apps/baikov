@@ -1,92 +1,42 @@
-# vuetify-projectsite
+# Baikov — SPA о главе Ростова
 
-Scaffolded with Vuetify CLI.
+Одностраничное приложение, посвящённое главе Ростова — Байкову.
 
-## ❗️ Documentation
+[🌐 Живая демонстрация](https://new-web-apps.github.io/baikov/#/) · [🎬 Видео-демо](https://rutube.ru/video/ea7e8269f18d16db3cb89ad321698c5c/)
 
-- Primary docs: https://vuetifyjs.com/
-- Getting started guide: https://vuetifyjs.com/en/getting-started/installation/
-- Community support: https://community.vuetifyjs.com/
-- Issue tracker: https://issues.vuetifyjs.com/
+## О проекте
 
-## 🧱 Stack
+SPA, посвящённый главе Ростова — Байкову.
 
-- Framework: Vue 3 + Vite
-- UI Library: Vuetify
-- Language: TypeScript
-- Package manager: npm
+В проекте использованы готовые компоненты из Vuetify. Анимация при скролле реализована с помощью библиотеки GSAP. На карте Ростова показаны почтовые тракты с помощью технологии CSS Motion Path.
 
-## 🧭 Start Here
+При разработке использовался AI-ассистент Qwen, использующий модель YandexGPT.
 
-- Main entry: `src/main.ts`
-- Main app component: `src/App.vue`
-- Main styles: `src/styles/`
-- Plugin setup: `src/plugins/`
+## Технологии
 
-## 📁 Project Structure
+- **Vue 3**
+- **TypeScript**
+- **Vuetify**
+- **GSAP** — анимации при скролле
+- **CSS Motion Path** — движение по маршрутам на карте
 
-- `src/main.ts` — application entry point
-- `src/App.vue` — root component
-- `src/components/` — reusable Vue components
-- `src/plugins/` — plugin registration and setup
-- `src/styles/` — global styles and theme settings
-- `public/` — static public files
+## Особенности
 
-## ✨ Enabled Features
+- SPA на Vue 3 с TypeScript
+- Готовые UI-компоненты Vuetify
+- Анимации при скролле через GSAP
+- Карта Ростова с почтовыми трактами на CSS Motion Path
+- AI-assisted development: при разработке использовался Qwen с моделью YandexGPT
 
-- ESLint
-- Vuetify MCP
-- Vue I18n
-- Pinia
-- Vue Router
+## Демо
 
-## 💿 Install
+- **Живая версия:** [https://new-web-apps.github.io/baikov/#/](https://new-web-apps.github.io/baikov/#/)
+- **Видео-демо:** [https://rutube.ru/video/ea7e8269f18d16db3cb89ad321698c5c/](https://rutube.ru/video/ea7e8269f18d16db3cb89ad321698c5c/)
 
-Use your selected package manager (npm) to install dependencies:
+## Запуск локально
 
 ```bash
-npm install
-```
-
-## 🚀 Quick Start
-
-```bash
+git clone https://github.com/new-web-apps/baikov.git
+cd baikov
 npm install
 npm run dev
-```
-
-## 🏗️ Build
-
-```bash
-npm run build
-```
-
-## 🧪 Available Scripts
-
-- `npm run dev`
-- `npm run build`
-- `npm run preview`
-- `npm run build-only`
-- `npm run type-check`
-- `npm run lint`
-- `npm run lint:fix`
-
-## 🤖 Vuetify MCP Server
-
-This project is configured with the Vuetify Model Context Protocol (MCP) server.
-To install and configure the MCP server for your favorite IDE (Cursor, Trae, Windsurf, VS Code, Claude Desktop, etc.) run:
-
-```bash
-npx -y @vuetify/mcp-cli
-```
-
-This will open an interactive setup wizard to help you connect your AI assistant to the Vuetify ecosystem.
-
-## 💪 Support Vuetify Development
-
-This project uses Vuetify - an MIT licensed Open Source project. We are glad to welcome contributors and any support for ongoing development:
-
-- Contribute to Vuetify and ecosystem projects: https://github.com/vuetifyjs
-- Request enterprise support: https://support.vuetifyjs.com/
-- Sponsor on GitHub: https://github.com/sponsors/vuetifyjs
-- Support on Open Collective: https://opencollective.com/vuetify
