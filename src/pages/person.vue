@@ -13,9 +13,10 @@ const items: Record<string, string> = {
 const titles: string[] = Object.keys(items);
 const descriptions: string[] = titles.map(key => items[key]);
 
+// Настройки GSAP
 gsap.registerPlugin(ScrollTrigger);
 
-// Явно указываем типы для Vue refs (HTMLDivElement или null)
+// Refs для анимаций ссылавшиеся элементы
 const blockOneRef = ref<HTMLDivElement | null>(null);
 const textOneRef = ref<HTMLDivElement | null>(null);
 const blockTwoRef = ref<HTMLDivElement | null>(null);
@@ -24,89 +25,36 @@ const blockThreeRef = ref<HTMLDivElement | null>(null);
 const textThreeRef = ref<HTMLDivElement | null>(null);
 const blockFourRef = ref<HTMLDivElement | null>(null);
 const textFourRef = ref<HTMLDivElement | null>(null);
-const blockFiveRef = ref<HTMLDivElement | null>(null);
-const textFiveRef = ref<HTMLDivElement | null>(null);
 
 onMounted(() => {
+  ScrollTrigger.refresh();
 
-  if (blockOneRef.value && textOneRef.value) {
-    gsap.to(textOneRef.value, {
-      y: (): number => window.innerHeight - 300,
-      scrollTrigger: {
-        trigger: blockOneRef.value,
-        scroller: '.scrollable-content',
-        start: 'top top',
-        end: '+=1000',
-        pin: true,
-        scrub: 1,
-        invalidateOnRefresh: true,
-      }
-    });
+  const setups: Array<{ block: ReturnType<typeof ref<HTMLElement | null>>; text: ReturnType<typeof ref<HTMLElement | null>> }> = [
+    { block: blockOneRef, text: textOneRef },
+    { block: blockTwoRef, text: textTwoRef },
+    { block: blockThreeRef, text: textThreeRef },
+    { block: blockFourRef, text: textFourRef },
+  ];
+
+  for (const { block, text } of setups) {
+    if (block.value && text.value) {
+      gsap.to(text.value, {
+        y: window.innerHeight - 300,
+        scrollTrigger: {
+          trigger: block.value,
+          scroller: '.scrollable-content',
+          start: 'top top',
+          end: '+=1000',
+          pin: true,
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+    }
   }
-  if (blockTwoRef.value && textTwoRef.value) {
-    gsap.to(textTwoRef.value, {
-      y: (): number => window.innerHeight - 300,
-      scrollTrigger: {
-        trigger: blockTwoRef.value,
-        scroller: '.scrollable-content',
-        start: 'top top',
-        end: '+=1000',
-        pin: true,
-        scrub: 1,
-        invalidateOnRefresh: true,
-      }
-    });
-  }
-
-  if (blockThreeRef.value && textThreeRef.value) {
-    gsap.to(textThreeRef.value, {
-      y: (): number => window.innerHeight - 300,
-      scrollTrigger: {
-        trigger: blockThreeRef.value,
-        scroller: '.scrollable-content',
-        start: 'top top',
-        end: '+=1000',
-        pin: true,
-        scrub: 1,
-        invalidateOnRefresh: true,
-      }
-    });
-  }
-
-  if (blockFourRef.value && textFourRef.value) {
-    gsap.to(textFourRef.value, {
-      y: (): number => window.innerHeight - 300,
-      scrollTrigger: {
-        trigger: blockFourRef.value,
-        scroller: '.scrollable-content',
-        start: 'top top',
-        end: '+=1000',
-        pin: true,
-        scrub: 1,
-        invalidateOnRefresh: true,
-      }
-    });
-  }
-
-  // if (blockFiveRef.value && textFiveRef.value) {
-  //   gsap.to(textFiveRef.value, {
-  //     y: (): number => window.innerHeight - 300,
-  //     scrollTrigger: {
-  //       trigger: blockFiveRef.value,
-  //       scroller: '.scrollable-content',
-  //       start: 'top top',
-  //       end: '+=1000',
-  //       pin: true,
-  //       scrub: 1,
-  //       invalidateOnRefresh: true,
-  //     }
-  //   });
-  // }
-
 });
 
 onUnmounted(() => {
-  // Типизируем trigger как ScrollTrigger, чтобы избежать implicit any в цикле
   ScrollTrigger.getAll().forEach((trigger: ScrollTrigger) => trigger.kill());
 });
 </script>
@@ -116,7 +64,7 @@ onUnmounted(() => {
   <div class="simple-scroll-page">
 
     <div ref="blockOneRef" class="scroll-section bg-first">
-      <v-container class="fill-height align-start pt-16" color="transparent">
+      <v-container class="fill-height align-start pt-16">
         <v-row>
           <v-col cols="12" md="12">
             <div ref="textOneRef" class="animated-text-box">
@@ -183,7 +131,7 @@ onUnmounted(() => {
       </v-container>
     </div>
 
-    <div ref="blockFiveRef" class="scroll-section bg-fiveth" style="position: relative; background: #d9d6cd;">
+    <div ref="blockFiveRef" class="scroll-section bg-fiveth">
       <v-container class="fill-height align-start pt-16">
         <v-row>
           <v-col cols="12" md="12">
@@ -198,16 +146,8 @@ onUnmounted(() => {
           </v-col>
         </v-row>
       </v-container>
-      <div class="image-section" style="
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: absolute;
-          bottom: 0;
-          left: 50%;
-          right: 50%;
-        ">
-        <img src=" /images/fon/1.jpeg" class="full-width-img faded-img"
+      <div class="image-section bg-img-section">
+        <img src="/images/fon/1.jpeg" class="full-width-img faded-img"
           :style="{ maxHeight: 'calc(100vh - var(--header-height))', width: 'auto', opacity: 0.5 }" />
       </div>
     </div>
@@ -244,8 +184,32 @@ onUnmounted(() => {
   background-image: url('/images/person/7.jpg');
 }
 
-.bg-fives {
+.bg-fiveth {
   background-image: url('/images/person/1.jpg');
+  background-color: #d9d6cd;
+}
+
+.bg-fiveth .bg-img-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  right: 50%;
+}
+
+.scroll-content {
+  display: flex;
+  align-items: start;
+  height: 100%;
+}
+
+.full-width-img {
+  width: 100%;
+  display: block;
+  height: auto;
+  opacity: 0.8;
 }
 
 .animated-text-box {

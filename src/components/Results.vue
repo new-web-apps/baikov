@@ -6,8 +6,7 @@
     <p>
       {{ populationGrowth.text }}
     </p>
-    <v-img src="/images/results/1.png" class="picture"
-      style="width: calc(var(--main-width) / 1.5); margin-left: auto; margin-right: auto;" />
+    <v-img src="/images/results/1.png" class="picture results-picture" />
     <h2>
       {{ tradeGrowth.title }}
     </h2>
@@ -18,7 +17,6 @@
 </template>
 
 <script setup lang="ts">
-const title = 'роста населения и торгового оборота'
 const populationGrowth = {
   title: 'Как инфраструктура рождает мегаполис: рост населения Ростова при А. М. Байкове',
   text: 'График наглядно демонстрирует феномен "байковской эпохи": за 27 лет с момента прихода Андрея Байкова к власти население Ростова выросло более чем в 5 раз',

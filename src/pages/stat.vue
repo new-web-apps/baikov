@@ -3,8 +3,7 @@
     <Results />
   </div>
 
-  <!-- Карта-секция: серый фон, карта внутри, GSAP pins эту секцию -->
-  <div ref="mapBlockRef" class="map-section-wrapper">
+  <div ref="mapBlockRef" class="map-pinned-wrapper">
     <div class="map-slider-container">
 
       <!-- Нижележащая карта -->
@@ -24,7 +23,7 @@
     </div>
   </div>
 
-  <div class="image-section" style="display: flex; justify-content: center; align-items: center; background: #d9d6cd;">
+  <div class="image-section bottom-section">
     <img src="/images/fon/3.jpeg" class="full-width-img faded-img"
       :style="{ maxHeight: 'calc(100vh - var(--header-height))', width: 'auto', opacity: 0.5 }" />
   </div>
@@ -90,7 +89,7 @@ onUnmounted(() => {
 }
 
 /* Серый фон — на всей секции */
-.map-section-wrapper {
+.map-pinned-wrapper {
   width: 100%;
   height: 100vh;
   display: flex;
@@ -137,5 +136,13 @@ onUnmounted(() => {
   height: 100%;
   z-index: 2;
   pointer-events: none;
+}
+
+/* Статистика — финальная секция с фоновым изображением */
+.bottom-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #d9d6cd;
 }
 </style>

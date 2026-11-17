@@ -1,10 +1,8 @@
 <template>
   <v-app color="transparent">
-    <div :style="{ display: 'fixed', height: headerHeight }" class="main-header">
-      <div class="header-container"
-        :style="{ minWidth: mainWidth, maxWidth: mainWidth, display: 'flex', marginLeft: 'auto', marginRight: 'auto', alignItems: 'center' }">
-        <v-btn to="/" variant="plain" :ripple="false" class="pa-0 ma-0"
-          style="min-width: 0; width: auto; height: auto; opacity: 1;">
+    <div class="main-header">
+      <div class="header-container header-flex">
+        <v-btn to="/" variant="plain" :ripple="false" class="logo-btn">
           <v-img src="/images/header/1.png" alt="Логотип" :width="headerHeight" :height="headerHeight"
             style="margin: 2px;" />
         </v-btn>
@@ -105,6 +103,21 @@ body {
 .header-container {
   width: var(--main-width);
   width: 1280px;
+}
+
+.header-flex {
+  display: flex;
+  min-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+}
+
+.logo-btn {
+  min-width: 0;
+  width: auto;
+  height: auto;
+  opacity: 1;
 }
 
 /* Возвращаем кликабельность кнопкам внутри шапки */

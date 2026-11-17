@@ -3,6 +3,13 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+// Константы для анимации
+const GAP_BEFORE_ITEM = 0.2
+const TITLE_MOVE_DELAY = 0.2
+const TITLE_DRAG_DURATION = 1.2
+const FADE_DURATION = 1
+const OVERLAP_OFFSET = 0.2
+
 gsap.registerPlugin(ScrollTrigger)
 
 const sceneRef = ref<HTMLElement | null>(null)
@@ -29,7 +36,7 @@ const cycleItems = ref([
   {
     id: 4,
     title: 'Инвестиции в медицину, фонари и образование  >',
-    desc: 'Полученный от торговли капитал Байков незамедлительно инвестировал в безопасность и социальную сферу. В 1864 году на улицах зажглись первые 600 фотогеновых фонарей, защитившие имущество торговцев от грабежей, в 1865 году заработал первый паровой водопровод протяжённостью 5 километров, а в 1869 году открылась женская прогиманзия. Вернувшись на пост в свой второй период правления, он дополнил городскую сеть Санитарной службой (1874), телефонной связью (1886), конно-железной дорогой (1887) и Публичной библиотекой (1886).',
+    desc: 'Полученный от торговли капитал Байков незаменимо инвестировал в безопасность и социальную сферу. В 1864 году на улицах зажглись первые 600 фотогеновых фонарей, защитившие имущество торговцев от грабежей, в 1865 году заработал первый паровой водопровод протяжённостью 5 километров, а в 1869 году открылась женская прогимназия. Вернувшись на пост в свой второй период правления, он дополнил городскую сеть Санитарной службой (1874), телефонной связью (1886), конно-железной дорогой (1887) и Публичной библиотекой (1886).',
     pictures: ['images/transformations/4_.webp', 'images/transformations/4__.jpg']
   },
   {
@@ -44,7 +51,6 @@ const cycleItems = ref([
 ])
 
 onMounted(() => {
-  // Пересчитываем позиции триггеров после SPA-навигации — скрываем кэшированные позиции старого скролла
   ScrollTrigger.refresh()
 
   if (!sceneRef.value) return
@@ -54,7 +60,7 @@ onMounted(() => {
       trigger: sceneRef.value,
       scroller: '.scrollable-content',
       start: 'top top',
-      end: 'bottom bottom', // Синхронизировано с длиной контента картинок
+      end: 'bottom bottom',
       scrub: 1
     }
   })
@@ -64,38 +70,33 @@ onMounted(() => {
 
     const label = `step-${index}`
 
-    // 1. АНИМАЦИЯ ОПИСАНИЙ: Предыдущий текст просто бесследно пропадает (без улетаний)
+    // АНИМАЦИЯ ОПИСАНИЙ: Предыдущий текст бесследно пропадает
     tl.to(`.desc-node-${index - 1}`, {
       opacity: 0,
-      duration: 0.2,
+      duration: GAP_BEFORE_ITEM,
       ease: 'power1.in'
     }, label)
 
-    // 2. АНИМАЦИЯ ЗАГОЛОВКОВ: Отработанный заголовок срывается с центра и улетает влево-вверх,
-    // формируя список с шагом по высоте (index - 1) * 60px
+    // АНИМАЦИЯ ЗАГОЛОВКОВ: Отработанный заголовок улетает вниз, формируя список
     tl.to(`.title-node-${index - 1}`, {
-      // xPercent: -85,              // Уносим к левому краю экрана
-      // yPercent: 140,             // Поднимаем наверх из центральной зоны
-      y: 300 + (index - 1) * 60,        // Накапливаем вертикальный список друг под другом
-      scale: 0.4,                 // Уменьшаем шрифт для аккуратного оглавления
-      // opacity: 0.6,               // Прошлые пункты списка делаем чуть приглушенными
+      y: 300 + (index - 1) * 60,
+      scale: 0.4,
       textAlign: 'left',
-      duration: 1.2,
+      duration: TITLE_DRAG_DURATION,
       ease: 'power2.inOut'
     }, label)
 
-    // 3. ПОЯВЛЕНИЕ НОВОГО БЛОКА: Новый заголовок и текст встают в центр крупно
-    // Заголовок может накладываться "внахлест" поверх старого, пока тот улетает
+    // ПОЯВЛЕНИЕ НОВОГО БЛОКА: новый заголовок и текст встают в центр крупно
     tl.fromTo(`.title-node-${index}`,
       { opacity: 0 },
-      { opacity: 1, duration: 1, ease: 'power2.out' },
-      `${label}+=0.2`             // Микрозадержка для эффекта нахлеста
+      { opacity: 1, duration: FADE_DURATION, ease: 'power2.out' },
+      `${label}+=${OVERLAP_OFFSET}`
     )
 
     tl.fromTo(`.desc-node-${index}`,
       { opacity: 0 },
-      { opacity: 1, duration: 1, ease: 'power2.out' },
-      `${label}+=0.2`
+      { opacity: 1, duration: FADE_DURATION, ease: 'power2.out' },
+      `${label}+=${OVERLAP_OFFSET}`
     )
   })
 })
@@ -109,22 +110,21 @@ onUnmounted(() => {
   <div ref="sceneRef" class="scroll-scene">
 
     <!-- ЛЕНТА КАРТИНОК -->
-    <div v-for="item in cycleItems" :key="'group-' + item.id" class="image-section"
-      style="display: flex; justify-content: center; align-items: center;">
-      <img v-for="picture in item.pictures" :key="picture" :src="picture" class="full-width-img"
-        :style="{ width: '100%', opacity: 0.8 }" />
+    <div v-for="item in cycleItems" :key="'group-' + item.id" class="image-section image-flex">
+      <img v-for="picture in item.pictures" :key="picture" :src="picture" class="full-width-img" />
     </div>
-    <div class="image-section"
-      style="display: flex; justify-content: center; align-items: center; background: #d9d6cd;">
+
+    <!-- ФИНАЛЬНАЯ ФОНОВАЯ КАРТИНКА -->
+    <div class="image-section bottom-section">
       <img src="/images/fon/2.jpeg" class="full-width-img faded-img"
         :style="{ maxHeight: 'calc(100vh - var(--header-height))', width: 'auto', opacity: 0.5 }" />
     </div>
 
     <!-- ФИКСИРОВАННЫЙ ИНТЕРФЕЙС ПОВЕРХ КАРТИНОК -->
-    <div class="fixed-ui-layer" style="width: min(var(--main-width), 100%); margin-left: auto; margin-right: auto;">
+    <div class="fixed-ui-layer">
       <div class="fill-height">
 
-        <!-- ЦЕНТРАЛЬНАЯ СЦЕНА ЗАГОЛОВКОВ (Изначально стоят крупно строго по центру) -->
+        <!-- ЦЕНТРАЛЬНАЯ СЦЕНА ЗАГОЛОВКОВ -->
         <div class="center-title-stage">
           <h2 v-for="(item, index) in cycleItems" :key="'title-' + item.id"
             :class="['text-h2 font-weight-black text-blackText shadow main-title-block', `title-node-${index}`]"
@@ -133,7 +133,7 @@ onUnmounted(() => {
           </h2>
         </div>
 
-        <!-- ЦЕНТРАЛЬНАЯ СЦЕНА ОПИСАНИЙ (Просто чистый крупный текст под заголовком, без плашек) -->
+        <!-- ЦЕНТРАЛЬНАЯ СЦЕНА ОПИСАНИЙ -->
         <div class="center-desc-stage mt-8">
           <div v-for="(item, index) in cycleItems" :key="'desc-' + item.id"
             :class="['pure-center-desc', `desc-node-${index}`, 'shadow-for-white-text']"
@@ -160,10 +160,24 @@ onUnmounted(() => {
   flex-direction: column;
 }
 
+.image-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bottom-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #d9d6cd;
+}
+
 .full-width-img {
   width: 100%;
   display: block;
   height: auto;
+  opacity: 0.8;
 }
 
 /* Фиксированный слой интерфейса */
@@ -176,9 +190,11 @@ onUnmounted(() => {
   height: 100vh;
   z-index: 10;
   pointer-events: none;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* 
+/*
   ГЕОМЕТРИЯ СЦЕНЫ:
   Оба контейнера выровнены во флекс-контейнере по центру.
   Благодаря абсолютной позиции внутри сцены элементы накладываются внахлест.
@@ -188,7 +204,6 @@ onUnmounted(() => {
   width: 100%;
   max-width: 900px;
   height: 160px;
-  /* Высота под крупные заголовки текста text-h2 */
   display: flex;
   align-items: center;
   justify-content: start;
@@ -197,13 +212,10 @@ onUnmounted(() => {
 .main-title-block {
   position: absolute;
   text-align: left;
-  /* width: 100%; */
   width: 500px;
   width: max(var(--main-width), 500px);
   max-width: max(var(--main-width), 500px);
   transform-origin: left center;
-  /* Важно для ухода к левому краю */
-  /* text-shadow: 0 4px 15px rgba(0, 0, 0, 0.95); */
   line-height: 1.2 !important;
   font-size: 52px;
 }
@@ -222,6 +234,5 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   width: 100%;
-  /* text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95); */
 }
 </style>

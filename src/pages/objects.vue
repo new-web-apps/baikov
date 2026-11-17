@@ -1,9 +1,8 @@
 <template>
   <div class="objects-container">
-    <div style="display: flex; flex-direction: column; justify-content: flex-end;">
+    <div class="left-column-wrapper">
       <h1 class="title">{{ currentObject?.title }}</h1>
-      <!-- Исправлено на display: grid -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+      <div class="two-column-grid">
 
         <!-- Левая колонка -->
         <div class="objects-list-column">
@@ -41,8 +40,8 @@
     </div>
 
   </div>
-  <div class="image-section" style="display: flex; justify-content: center; align-items: center; background: #d9d6cd;">
-    <img src="/images/fon/2.jpeg" class="full-width-img faded-img z"
+  <div class="image-section bottom-section">
+    <img src="/images/fon/2.jpeg" class="full-width-img faded-img"
       :style="{ maxHeight: 'calc(100vh - var(--header-height))', width: 'auto', opacity: 0.5 }" />
   </div>
 </template>
@@ -97,10 +96,6 @@ watch(selectedObject, () => {
   /* 3 колонки: Меню (280px), Текст (занимает 45% от остатка), Картинка (занимает 55%) */
   grid-template-columns: 1fr 1fr;
   gap: 32px;
-  /* padding: 24px; */
-
-  /* Исключаем вертикальный скролл страницы: фиксируем высоту контейнера */
-  height: calc(100vh - var(--header-height));
   /* 64px — примерная высота вашего v-app-bar, если он есть */
   max-height: calc(100vh - var(--header-height));
   overflow: hidden;
@@ -110,6 +105,21 @@ watch(selectedObject, () => {
   max-width: var(--main-width);
   margin-left: auto;
   margin-right: auto;
+}
+
+/* Обертка левой части */
+.left-column-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+/* Двухколоночная сетка */
+.two-column-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
 }
 
 /* КОЛОНКА 1: Список объектов */
@@ -260,5 +270,22 @@ watch(selectedObject, () => {
 /* Если Vuetify-список имеет внутренние отступы, которые мешают ровному выравниванию */
 .objects-list-column .v-list {
   margin-bottom: 0;
+}
+/* Статичные стили для видео и секций */
+.image-section {
+  width: 100%;
+  flex-direction: column;
+}
+
+.bottom-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #d9d6cd;
+}
+
+.full-width-img {
+  display: block;
+  height: auto;
 }
 </style>

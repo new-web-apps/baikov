@@ -14,15 +14,11 @@ export const useAppStore = defineStore('app', {
     },
     images: {
       logo: '/images/logo.png',
-      banner: '/images/banner.jpg'
-    }
+      banner: '/images/banner.jpg',
+    },
   }),
   getters: {
     getMainTexts: (state) => state.mainTexts,
     getImages: (state) => state.images,
-
-    // getFullPageInfo() {
-    //   return `${this.getTitle} — ${this.state.texts.description}`;
-    // }
-  }
+  },
 })
