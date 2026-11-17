@@ -3,17 +3,17 @@
     <Results />
   </div>
 
-  <!-- Контейнер-обертка служит триггером для фиксации -->
+  <!-- Карта-секция: серый фон, карта внутри, GSAP pins эту секцию -->
   <div ref="mapBlockRef" class="map-section-wrapper">
     <div class="map-slider-container">
 
-      <!-- Нижележащая карта (Обычная) -->
+      <!-- Нижележащая карта -->
       <img src="/images/results/3.png" class="map-image base" alt="Базовая карта" />
 
-      <!-- Верхняя карта (Светящиеся дороги), которая режется по CSS-переменной -->
+      <!-- Верхняя карта, раскрывающаяся маской -->
       <img ref="overlayImgRef" src="/images/results/4.png" class="map-image overlay" alt="Карта с дорогами" />
 
-      <!-- Ваш SVG-слой с 6 дорогами -->
+      <!-- SVG-слой с дорогами -->
       <svg version="1.0" xmlns="http://w3.org" viewBox="0 0 1588 895" class="overlay-svg"
         preserveAspectRatio="xMidYMid meet">
         <g transform="translate(0.000000,895.000000) scale(0.100000,-0.100000)" fill="none" stroke="none">
@@ -42,30 +42,38 @@ const mapBlockRef = ref<HTMLDivElement | null>(null);
 const overlayImgRef = ref<HTMLImageElement | null>(null);
 
 onMounted(() => {
-  if (mapBlockRef.value && overlayImgRef.value) {
-    // 1. Создаем таймлайн, привязанный к ScrollTrigger всей секции
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: mapBlockRef.value,
-        scroller: '.scrollable-content',
-        start: 'top top',    // Блок доезжает до верха экрана и фиксируется
-        end: '+=1500',       // Длина общей фиксации на экране
-        pin: true,           // Замораживаем страницу
-        scrub: true,         // Жесткая связь анимации с колесиком мыши
-        invalidateOnRefresh: true,
-      }
-    });
+  ScrollTrigger.refresh();
+  ScrollTrigger.getAll().forEach(t => t.kill());
 
-    // 2. Скрываем.overlay сразу в нуле и запускаем анимацию раскрытия шторки
-    tl.set(overlayImgRef.value, { '--reveal': '0%' })
-      .to(overlayImgRef.value, {
-        '--reveal': '100%',
-        ease: 'none',
-        duration: 1
-      })
-      // 3. Пауза в конце — чтобы пользователь успел рассмотреть готовую карту
-      .to({}, { duration: 0.4 });
-  }
+  if (!mapBlockRef.value || !overlayImgRef.value) return;
+
+  const wrapper = mapBlockRef.value;
+  const wrapperHeight = wrapper.offsetHeight;
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: wrapper,
+      scroller: '.scrollable-content',
+      start: 'top top',            // Карта сразу после шапки — фиксируется
+      end: `+=${wrapperHeight + 800}`, // Фиксация + прокрутка + пауза в конце
+      pin: true,
+      scrub: true,
+      invalidateOnRefresh: true,
+    },
+  });
+
+  // Фаза 1: пауза — карта зафиксирована, раскрытие ещё не началось
+  tl.to({}, { duration: 0.15 });
+
+  // Фаза 2: раскрытие маски слева направо
+  tl.to(overlayImgRef.value, {
+    '--reveal': '100%',
+    ease: 'none',
+    duration: 1
+  });
+
+  // Фаза 3: пауза — карта полностью раскрыта, можно рассматривать
+  tl.to({}, { duration: 0.15 });
 });
 
 onUnmounted(() => {
@@ -81,6 +89,7 @@ onUnmounted(() => {
   margin-right: auto;
 }
 
+/* Серый фон — на всей секции */
 .map-section-wrapper {
   width: 100%;
   height: 100vh;
@@ -90,6 +99,7 @@ onUnmounted(() => {
   background-color: #d9d6cd;
 }
 
+/* Контейнер карты */
 .map-slider-container {
   position: relative;
   width: var(--main-width);
@@ -100,6 +110,7 @@ onUnmounted(() => {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
+/* Оба изображения — покрывают весь контейнер */
 .map-image {
   position: absolute;
   top: 0;
@@ -108,8 +119,10 @@ onUnmounted(() => {
   height: 100%;
   object-fit: fill;
   pointer-events: none;
+  background-color: #d9d6cd; /* fallback — серый всегда за картиной */
 }
 
+/* Маска раскрытия */
 .map-image.overlay {
   --reveal: 0%;
   clip-path: polygon(0 0, var(--reveal) 0, var(--reveal) 100%, 0 100%);

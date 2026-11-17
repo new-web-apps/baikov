@@ -44,6 +44,9 @@ const cycleItems = ref([
 ])
 
 onMounted(() => {
+  // Пересчитываем позиции триггеров после SPA-навигации — скрываем кэшированные позиции старого скролла
+  ScrollTrigger.refresh()
+
   if (!sceneRef.value) return
 
   const tl = gsap.timeline({

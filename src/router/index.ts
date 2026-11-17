@@ -31,4 +31,11 @@ const router = createRouter({
   ],
 })
 
+router.beforeEach(() => {
+  const container = document.querySelector('.scrollable-content')
+  if (container) {
+    ;(container as HTMLElement).scrollTop = 0
+  }
+})
+
 export default router
